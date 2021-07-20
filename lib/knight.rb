@@ -1,7 +1,7 @@
 require_relative 'board'
 
 class Knight
-  attr_accessor :value, :children
+  attr_accessor :value, :parent, :children
 
   POSSIBLE_MOVES = [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]].freeze
 
@@ -12,11 +12,11 @@ class Knight
   end
 
   def create_children
-    moves = POSSIBLE_MOVES.map {|pos| [value[0] + pos[0], value[1] + pos[1]]}
-    p moves
+    POSSIBLE_MOVES.map {|pos| [value[0] + pos[0], value[1] + pos[1]]}
+                          .keep_if {|coord| valid_move?(coord) && coord != @value}
   end
 
-  def valid_move
-    #remove values that are off the board
+  def valid_move?(position)
+    position[0].between?(0, 7) && position[1].between?(0, 7)
   end
 end
